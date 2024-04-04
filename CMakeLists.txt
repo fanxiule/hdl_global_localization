@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.16.3)
 project(hdl_global_localization)
 
 option(ENABLE_TEASER "Build with Teaser++" OFF)
@@ -107,6 +107,14 @@ if(TEASER_LIBRARIES)
   target_link_libraries(hdl_global_localization
     hdl_global_localization_teaser
   )
+
+  install(
+  TARGETS
+    hdl_global_localization_teaser
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
 endif()
 
 
@@ -122,4 +130,24 @@ add_executable(hdl_global_localization_test src/hdl_global_localization_test.cpp
 add_dependencies(hdl_global_localization_test ${PROJECT_NAME}_gencpp)
 target_link_libraries(hdl_global_localization_test
   ${catkin_LIBRARIES}
+)
+
+install(
+  TARGETS
+    hdl_global_localization
+    hdl_global_localization_node
+    hdl_global_localization_test
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+
+install(DIRECTORY 
+  config
+  launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+install(DIRECTORY include/hdl_global_localization/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )

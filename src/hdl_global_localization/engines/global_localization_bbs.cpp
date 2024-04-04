@@ -46,7 +46,9 @@ void GlobalLocalizationBBS::set_global_map(pcl::PointCloud<pcl::PointXYZ>::Const
 
   auto map_3d = unslice(map_2d);
   map_3d->header.frame_id = "map";
-  map_slice_pub.publish(map_3d);
+  sensor_msgs::PointCloud2 map_3d_msg;
+  pcl::toROSMsg(*map_3d, map_3d_msg);
+  map_slice_pub.publish(map_3d_msg);
   gridmap_pub.publish(bbs->gridmap()->to_rosmsg());
 }
 
@@ -73,7 +75,9 @@ GlobalLocalizationResults GlobalLocalizationBBS::query(pcl::PointCloud<pcl::Poin
   if (scan_slice_pub.getNumSubscribers()) {
     auto scan_3d = unslice(scan_2d);
     scan_3d->header = cloud->header;
-    scan_slice_pub.publish(scan_3d);
+    sensor_msgs::PointCloud2 scan_3d_msg;
+    pcl::toROSMsg(*scan_3d, scan_3d_msg);
+    scan_slice_pub.publish(scan_3d_msg);
   }
 
   Eigen::Isometry3f trans_3d = Eigen::Isometry3f::Identity();
